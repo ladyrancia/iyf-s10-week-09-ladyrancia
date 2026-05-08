@@ -1,40 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFetch } from '../hooks/useFetch';
 import PostCard from '../components/Post/PostCard';
 
 function Posts() {
   const [search, setSearch] = useState('');
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  // Fetch all posts
-  const { data: allPosts, loading: fetchLoading, error: fetchError } = useFetch(
+  const { data: posts, loading, error } = useFetch(
     'https://jsonplaceholder.typicode.com/posts'
   );
 
-  // Update posts state when data changes
-  React.useEffect(() => {
-    if (fetchLoading) {
-      setLoading(true);
-      setError(null);
-    } else if (fetchError) {
-      setLoading(false);
-      setError(fetchError);
-    } else {
-      setPosts(allPosts || []);
-      setLoading(false);
-    }
-  }, [allPosts, fetchLoading, fetchError]);
+  if (loading) return <div className="text-center py-10">Loading posts...</div>;
+  if (error) return <div className="text-center py-10 text-red-500">Error: {error}</div>;
 
-  // Filter posts based on search
-  const filteredPosts = posts.filter(post =>
+  const filteredPosts = posts?.filter(post =>
     post.title.toLowerCase().includes(search.toLowerCase()) ||
     post.body.toLowerCase().includes(search.toLowerCase())
-  );
-
-  if (loading && posts.length === 0) return <div className="text-center py-10">Loading posts...</div>;
-  if (error) return <div className="text-center py-10 text-red-500">Error: {error}</div>;
+  ) || [];
 
   return (
     <div className="py-10">

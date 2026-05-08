@@ -1,5 +1,5 @@
-export { default as Button } from './Button';
-export { default as Input } from './Input';
-export { default as Card } from './Card';
-export { default as Modal } from './Modal';
+export { default as Button } from './Button/Button';
+export { default as Input } from './Input/Input';
+export { default as Card } from './Card/Card';
+export { default as Modal } from './Modal/Modal';
 // Avatar will be added later
